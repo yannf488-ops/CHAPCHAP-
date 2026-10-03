@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CHAPCHAP — Marketplace Côte d'Ivoire</title>
+<style>
+:root{--blue:#101b3d;--blue2:#18295a;--gold:#ffc928;--bg:#f5f7fb;--text:#172033;--muted:#697386;--white:#fff;--green:#19a974}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}button{cursor:pointer;border:0}
+header{background:var(--blue);color:#fff;position:sticky;top:0;z-index:10;box-shadow:0 3px 15px #0002}
+.top{max-width:1180px;margin:auto;padding:15px 18px;display:flex;align-items:center;gap:18px}
+.logo{font-size:25px;font-weight:900;letter-spacing:.5px}.logo span{color:var(--gold)}
+.search{flex:1;display:flex;background:#fff;border-radius:12px;overflow:hidden}.search input{border:0;outline:0;padding:12px 14px;width:100%}.search button{background:var(--gold);padding:0 17px}
+.nav{display:flex;gap:8px}.nav button{background:#ffffff12;color:#fff;padding:10px 12px;border-radius:10px}
+main{max-width:1180px;margin:auto;padding:22px 18px 90px}.hero{background:linear-gradient(135deg,var(--blue),#253d82);color:white;border-radius:22px;padding:35px;display:flex;justify-content:space-between;align-items:center;gap:25px}.hero h1{font-size:42px;margin:0 0 10px}.hero p{max-width:600px;color:#dfe6ff}.cta{background:var(--gold);color:#111;padding:13px 18px;border-radius:11px;font-weight:800}.badge{background:#ffffff18;border:1px solid #ffffff25;padding:8px 11px;border-radius:20px;display:inline-block;margin-bottom:12px}
+h2{margin:30px 0 15px}.cats{display:flex;gap:10px;overflow:auto;padding-bottom:4px}.cat{background:#fff;padding:12px 16px;border-radius:12px;white-space:nowrap;border:1px solid #e7eaf0}.cat.active{background:var(--blue);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e7eaf0;box-shadow:0 4px 12px #17203308}.pic{height:170px;background:#e9edf5;display:flex;align-items:center;justify-content:center;font-size:58px}.body{padding:14px}.price{font-weight:900;font-size:19px}.old{text-decoration:line-through;color:#9aa2b1;font-size:13px}.seller{color:var(--muted);font-size:13px;margin:7px 0 12px}.buy{background:var(--blue);color:#fff;width:100%;padding:11px;border-radius:10px;font-weight:700}
+.panel{display:none;background:#fff;border-radius:18px;padding:22px;border:1px solid #e7eaf0}.panel.show{display:block}.row{display:flex;gap:12px;flex-wrap:wrap}.field{display:grid;gap:6px;margin:10px 0}.field input,.field textarea,.field select{padding:12px;border:1px solid #d9deea;border-radius:10px;outline:none}.field input:focus,.field textarea:focus{border-color:var(--blue)}
+.action{background:var(--blue);color:#fff;padding:11px 15px;border-radius:10px}.light{background:#eef1f7;color:var(--blue)}.success{background:#e5f8f0;color:#08794f;padding:12px;border-radius:10px}
+.order{border:1px solid #e5e8ef;padding:15px;border-radius:12px;margin:10px 0;display:flex;justify-content:space-between;gap:10px}.status{color:var(--green);font-weight:800}
+.chat{position:fixed;right:18px;bottom:75px;width:340px;max-width:calc(100% - 36px);background:#fff;border-radius:18px;box-shadow:0 15px 50px #0003;display:none;overflow:hidden;z-index:20}.chat.show{display:block}.chathead{background:var(--blue);color:#fff;padding:14px;font-weight:800}.messages{height:280px;padding:12px;overflow:auto;background:#f7f8fb}.msg{padding:9px 11px;border-radius:12px;margin:7px 0;max-width:85%;font-size:14px}.bot{background:#fff}.me{background:#dfe7ff;margin-left:auto}.chatbar{display:flex;border-top:1px solid #eee}.chatbar input{flex:1;padding:12px;border:0;outline:0}.chatbar button{background:var(--gold);padding:0 14px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:center;gap:5px;z-index:15}.bottom button{background:none;padding:10px 15px;color:#586174;font-size:12px}.bottom b{display:block;color:var(--blue);font-size:16px}
+footer{text-align:center;color:#7a8292;padding:30px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:31px}.nav{display:none}.hero{padding:25px}.top{gap:10px}}
+@media(max-width:520px){main{padding:14px 12px 80px}.grid{gap:10px}.pic{height:135px}.hero{border-radius:16px}.hero h1{font-size:27px}.hero p{font-size:14px}.top{padding:10px 12px}.logo{font-size:21px}.search button{padding:0 11px}.bottom button{padding:9px 9px}.order{display:block}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="logo">CHAP<span>CHAP</span></div>
+    <div class="search"><input id="search" placeholder="Rechercher un article..." oninput="renderProducts()"><button onclick="renderProducts()">🔎</button></div>
+    <div class="nav"><button onclick="show('account')">👤 Compte</button><button onclick="show('seller')">🏪 Vendre</button><button onclick="show('cart')">🛒 <span id="cartCount">0</span></button></div>
+  </div>
+</header>
+
+<main>
+<section id="home">
+  <div class="hero">
+    <div><span class="badge">🇨🇮 Marketplace ivoirienne</span><h1>Achetez et vendez <span style="color:#ffc928">CHAPCHAP.</span></h1><p>Une marketplace simple pour trouver des articles, créer sa boutique et suivre ses commandes.</p><button class="cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Découvrir les articles</button></div>
+    <div style="font-size:90px">🛍️</div>
+  </div>
+  <h2>Catégories</h2>
+  <div class="cats" id="cats"></div>
+  <h2 id="products">Articles populaires</h2>
+  <div class="grid" id="productGrid"></div>
+</section>
+
+<section id="cart" class="panel">
+<h2>🛒 Mon panier</h2><div id="cartItems"></div><div id="cartTotal"></div>
+<button class="action" onclick="checkout()">Passer au paiement</button>
+</section>
+
+<section id="account" class="panel">
+<h2>👤 Mon compte</h2><div class="row"><button class="action" onclick="alert('Connexion démo : à connecter à une vraie base de données.')">Se connecter</button><button class="action light" onclick="alert('Inscription démo : à connecter à une vraie base de données.')">Créer un compte</button></div>
+<h3>Mes commandes</h3><div id="orders"></div></section>
+
+<section id="seller" class="panel">
+<h2>🏪 Espace vendeur</h2><p>Publie ton article et commence à vendre sur CHAPCHAP.</p>
+<div class="field"><label>Nom de l'article</label><input id="pname" placeholder="Ex : Casque Bluetooth"></div>
+<div class="field"><label>Prix (FCFA)</label><input id="pprice" type="number" placeholder="15000"></div>
+<div class="field"><label>Catégorie</label><select id="pcat"><option>Électronique</option><option>Mode</option><option>Maison</option><option>Beauté</option><option>Sports</option></select></div>
+<div class="field"><label>Description</label><textarea id="pdesc" rows="3" placeholder="Décris ton article..."></textarea></div>
+<button class="action" onclick="addProduct()">Publier l'article</button>
+</section>
+
+<section id="support" class="panel">
+<h2>🆘 Assistance client</h2><p>Besoin d'aide concernant une commande, un paiement, un vendeur ou une livraison ?</p>
+<div class="success">🤖 L'assistant CHAPCHAP est disponible 24h/24 pour les questions courantes.</div><br>
+<button class="action" onclick="toggleChat()">Ouvrir l'assistant IA</button>
+<h3>Centre d'aide</h3><p>• Paiement • Commande • Livraison • Remboursement • Compte vendeur</p>
+</section>
+
+<section id="payment" class="panel">
+<h2>💳 Paiement sécurisé</h2><p>Choisis un moyen de paiement pour le prototype.</p>
+<div class="row"><button class="action" onclick="fakePay('Wave Côte d’Ivoire')">🔵 Wave CI</button><button class="action" onclick="fakePay('MTN MoMo')">🟡 MTN MoMo</button><button class="action" onclick="fakePay('Moov Money CI')">🟢 Moov Money</button></div>
+<p style="color:#697386;margin-top:18px">Prototype : aucun argent réel n'est débité. En production, cette étape devra être reliée aux services de paiement officiels.</p>
+</section>
+<footer>CHAPCHAP © 2026 — Marketplace Côte d'Ivoire</footer>
+</main>
+
+<div class="chat" id="chat">
+<div class="chathead">🤖 Assistant CHAPCHAP <button style="float:right;background:none;color:#fff" onclick="toggleChat()">✕</button></div>
+<div class="messages" id="messages"><div class="msg bot">Bonjour 👋 Je suis l'assistant CHAPCHAP. Quel est ton problème ?</div></div>
+<div class="chatbar"><input id="chatInput" placeholder="Écris ton message..." onkeydown="if(event.key==='Enter')sendChat()"><button onclick="sendChat()">➤</button></div>
+</div>
+<div class="bottom">
+<button onclick="show('home')"><b>⌂</b>Accueil</button><button onclick="show('cart')"><b>🛒</b>Panier</button><button onclick="show('seller')"><b>＋</b>Vendre</button><button onclick="show('support')"><b>?</b>Assistance</button><button onclick="show('account')"><b>♙</b>Compte</button>
+</div>
+
+<script>
+const products=[
+{id:1,name:"Casque Bluetooth",price:15000,cat:"Électronique",emoji:"🎧",seller:"Boutique Abidjan"},
+{id:2,name:"Basket tendance",price:25000,cat:"Mode",emoji:"👟",seller:"Style CI"},
+{id:3,name:"Smartphone",price:85000,cat:"Électronique",emoji:"📱",seller:"Tech Store"},
+{id:4,name:"Sac à main",price:18000,cat:"Mode",emoji:"👜",seller:"Fashion CI"},
+{id:5,name:"Ballon de football",price:12000,cat:"Sports",emoji:"⚽",seller:"Sport Abidjan"},
+{id:6,name:"Parfum",price:10000,cat:"Beauté",emoji:"🌸",seller:"Beauty Shop"},
+{id:7,name:"Mixeur",price:22000,cat:"Maison",emoji:"🥤",seller:"Maison Plus"},
+{id:8,name:"Montre",price:20000,cat:"Mode",emoji:"⌚",seller:"Style CI"}
+];
+let cart=JSON.parse(localStorage.getItem('chap_cart')||'[]'), orders=JSON.parse(localStorage.getItem('chap_orders')||'[]');
+let selectedCat="Tous";
+function money(n){return new Intl.NumberFormat('fr-FR').format(n)+" FCFA"}
+function renderCats(){let cs=["Tous","Électronique","Mode","Maison","Beauté","Sports"];document.getElementById('cats').innerHTML=cs.map(c=>`<button class="cat ${c===selectedCat?'active':''}" onclick="selectedCat='${c}';renderCats();renderProducts()">${c}</button>`).join("")}
+function renderProducts(){let q=document.getElementById('search').value.toLowerCase();let arr=products.filter(p=>(selectedCat==="Tous"||p.cat===selectedCat)&&p.name.toLowerCase().includes(q));document.getElementById('productGrid').innerHTML=arr.map(p=>`<div class="card"><div class="pic">${p.emoji}</div><div class="body"><b>${p.name}</b><div class="price">${money(p.price)}</div><div class="seller">Vendeur : ${p.seller}</div><button class="buy" onclick="addCart(${p.id})">Ajouter au panier</button></div></div>`).join("")||"<p>Aucun article trouvé.</p>"}
+function addCart(id){let p=products.find(x=>x.id===id);cart.push(p);save();updateCart();alert("Article ajouté au panier ✅")}
+function save(){localStorage.setItem('chap_cart',JSON.stringify(cart));localStorage.setItem('chap_orders',JSON.stringify(orders))}
+function updateCart(){document.getElementById('cartCount').textContent=cart.length;let box=document.getElementById('cartItems');box.innerHTML=cart.length?cart.map((p,i)=>`<div class="order"><div>${p.emoji} <b>${p.name}</b><br>${money(p.price)}</div><button class="action light" onclick="cart.splice(${i},1);save();updateCart()">Retirer</button></div>`).join(""):"<p>Ton panier est vide.</p>";let total=cart.reduce((s,p)=>s+p.price,0);document.getElementById('cartTotal').innerHTML=`<h3>Total : ${money(total)}</h3>`}
+function checkout(){if(!cart.length)return alert("Ton panier est vide.");show('payment')}
+function fakePay(method){let total=cart.reduce((s,p)=>s+p.price,0);orders.unshift({id:Date.now(),total,method,status:"Paiement en attente de livraison"});cart=[];save();updateCart();renderOrders();alert(`Prototype : paiement ${method} sélectionné pour ${money(total)}. Aucun débit réel.`);show('account')}
+function renderOrders(){document.getElementById('orders').innerHTML=orders.length?orders.map(o=>`<div class="order"><div><b>Commande #${String(o.id).slice(-6)}</b><br>${money(o.total)}<br>${o.method}</div><div class="status">${o.status}</div></div>`).join(""):"<p>Aucune commande pour le moment.</p>"}
+function addProduct(){let n=document.getElementById('pname').value,p=Number(document.getElementById('pprice').value),c=document.getElementById('pcat').value;if(!n||!p)return alert("Remplis le nom et le prix.");products.unshift({id:Date.now(),name:n,price:p,cat:c,emoji:"📦",seller:"Ma boutique"});document.getElementById('pname').value="";document.getElementById('pprice').value="";renderCats();renderProducts();alert("Article publié dans la démo ✅");show('home')}
+function show(id){document.querySelectorAll('main>section').forEach(s=>s.classList.remove('show'));if(id==="home"){document.getElementById('home').style.display="block"}else{document.getElementById('home').style.display="none";document.getElementById(id).classList.add('show')}if(id==="cart")updateCart();if(id==="account")renderOrders();window.scrollTo({top:0,behavior:"smooth"})}
+function toggleChat(){document.getElementById('chat').classList.toggle('show')}
+function sendChat(){let i=document.getElementById('chatInput'),v=i.value.trim();if(!v)return;let m=document.getElementById('messages');m.innerHTML+=`<div class="msg me">${v}</div>`;i.value="";let reply="Je peux t'aider avec une commande, un paiement, une livraison, un compte ou un vendeur.";if(/paiement|wave|mtn|moov/i.test(v))reply="Pour un paiement, vérifie le montant et le moyen choisi. Dans cette V1, les paiements sont simulés.";if(/livraison|colis/i.test(v))reply="Tu peux suivre l'état de ta commande depuis « Mon compte ». La libération du paiement au vendeur est prévue après confirmation de livraison.";if(/vendeur|vendre/i.test(v))reply="Va dans « Vendre » pour publier un article dans le prototype.";m.innerHTML+=`<div class="msg bot">${reply}</div>`;m.scrollTop=m.scrollHeight}
+renderCats();renderProducts();updateCart();renderOrders();
+</script>
+</body>
+</html>
